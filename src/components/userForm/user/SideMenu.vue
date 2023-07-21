@@ -13,27 +13,38 @@
         <p></p>
         <h6>订单中心</h6>
         <p></p>
-        <p id="-1p" class="text-secondary" style="font-size: 2px">
-            <a href="../user/order?status=-1" class="list-group-item list-group-item-action">全部订单</a>
+        <p :class="{'text-primary':orderFilter==='all'}" style="font-size: 2px">
+            <RouterLink :to="{path:'order',query:{orderFilter:'all'}}" class="list-group-item list-group-item-action">
+                全部订单
+            </RouterLink>
         </p>
-        <p id="0p" class="text-secondary" style="font-size: 2px">
-            <a href="../user/order?status=0" class="list-group-item list-group-item-action">待支付订单</a>
+        <p :class="{'text-primary':orderFilter==='notPay'}" style="font-size: 2px">
+            <RouterLink :to="{path:'order',query:{orderFilter:'notPay'}}" class="list-group-item list-group-item-action">
+                待支付订单
+            </RouterLink>
         </p>
-        <p id="-2p" class="text-secondary" style="font-size: 2px">
-            <a href="../user/order?status=-2" class="list-group-item list-group-item-action">待收货订单</a>
+        <p :class="{'text-primary':orderFilter==='notReceive'}" style="font-size: 2px">
+            <RouterLink :to="{path:'order',query:{orderFilter:'notReceive'}}" class="list-group-item list-group-item-action">
+                待收货订单
+            </RouterLink>
         </p>
-        <p id="-3p" class="text-secondary" style="font-size: 2px">
-            <a href="../user/order?status=-3" class="list-group-item list-group-item-action">已完成订单</a>
+        <p :class="{'text-primary':orderFilter==='finish'}" style="font-size: 2px">
+            <RouterLink :to="{path:'order',query:{orderFilter:'finish'}}" class="list-group-item list-group-item-action">
+                已完成订单
+            </RouterLink>
         </p>
-        <p id="-4p" class="text-secondary" style="font-size: 2px">
-            <a href="../user/order?status=-4" class="list-group-item list-group-item-action">已取消订单</a>
+        <p :class="{'text-primary':orderFilter==='cancel'}" style="font-size: 2px">
+            <RouterLink :to="{path:'order',query:{orderFilter:'cancel'}}" class="list-group-item list-group-item-action">
+                已取消订单
+            </RouterLink>
         </p>
     </div>
 </template>
 <script setup>
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, defineProps} from "vue";
 import {useRoute} from "vue-router";
 
+defineProps(['orderFilter'])
 const data = reactive({
     formName: ''
 })

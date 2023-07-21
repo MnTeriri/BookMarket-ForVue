@@ -6,19 +6,13 @@
                 <div class="col-1"></div>
                 <ul class="nav nav-pills text-center">
                     <li class="nav-item">
-                        <RouterLink to="../shopping/index" class="nav-link" :class="{'active':data.formName==='index'}">
-                            主页
-                        </RouterLink>
+                        <RouterLink to="../shopping/index" class="nav-link" :class="{'active':data.formName==='index'}">主页</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="../shopping/shoppingList" class="nav-link" :class="{'active':data.formName==='shoppingList'}">
-                            商品页面
-                        </RouterLink>
+                        <RouterLink to="../shopping/shoppingList" class="nav-link" :class="{'active':data.formName==='shoppingList'}">商品页面</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink to="" class="nav-link" :class="{'active':data.formName==='about'}">
-                            关于网上书店
-                        </RouterLink>
+                        <RouterLink to="" class="nav-link" :class="{'active':data.formName==='about'}">关于网上书店</RouterLink>
                     </li>
                 </ul>
             </div>

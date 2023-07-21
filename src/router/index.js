@@ -8,6 +8,7 @@ import CartForm from "@/components/userForm/user/CartForm.vue";
 import bookDetailForm from "@/components/userForm/shopping/BookDetailForm.vue";
 import SelfForm from "@/components/userForm/user/SelfForm.vue";
 import AddressForm from "@/components/userForm/user/AddressForm.vue";
+import OrderForm from "@/components/userForm/user/OrderForm.vue";
 
 const routes = [{
     path: '/shopping',
@@ -47,6 +48,10 @@ const routes = [{
             path: 'address',
             name: 'AddressForm',
             component: AddressForm,
+        },{
+            path: 'order',
+            name: 'OrderForm',
+            component: OrderForm,
         }
     ]
 }, {
