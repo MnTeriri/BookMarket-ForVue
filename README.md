@@ -26,3 +26,12 @@
 * 1. 登录和注册
 * 2. 商品页面的分页、查询
 * 3. 个人中心界面的基本框架搭建
+
+### 2023/7/22
+
+实现了如下功能：
+* 对订单界面（OrderForm）进行了细化，编写了订单显示样式
+* 使用了axions向后端服务器发送了查询订单请求（只发送了查询类型，后续添加订单号、分页信息）
+* 对侧边导航栏（SideMenu）进行改造，使用defineProps()，使得订单页面显示SideMenu时能根据查询类型高亮显示RouteLink
+* 在OrderForm中使用onBeforeRouteUpdate()，使得执行上述RouteLink时，能根据query的改变刷新订单数据
+* 对订单查询类型起了名（”all“：所有订单，”notPay“：待支付，”notReceive“：待收货，”finish“：已完成，”cancel“：已取消）
