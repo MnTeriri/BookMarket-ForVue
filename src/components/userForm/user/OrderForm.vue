@@ -11,16 +11,11 @@
                     <div class="row" style="height: 30px;margin-bottom: 20px">
                         <div class="col-8">
                             <nav class="nav">
-                                <a id="-1a" class="nav-link text-secondary" style="font-size: 2px"
-                                   href="../user/order?status=-1">全部订单</a>
-                                <a id="0a" class="nav-link text-secondary" style="font-size: 2px"
-                                   href="../user/order?status=0">待支付</a>
-                                <a id="-2a" class="nav-link text-secondary" style="font-size: 2px"
-                                   href="../user/order?status=-2">待收货</a>
-                                <a id="-3a" class="nav-link text-secondary" style="font-size: 2px"
-                                   href="../user/order?status=-3">已完成</a>
-                                <a id="-4a" class="nav-link text-secondary" style="font-size: 2px"
-                                   href="../user/order?status=-4">已取消</a>
+                                <RouterLink :to="{path:'order',query:{orderFilter:'all'}}" class="nav-link" :class="{'text-secondary':data.orderFilter!=='all'}" style="font-size: 2px">全部订单</RouterLink>
+                                <RouterLink :to="{path:'order',query:{orderFilter:'notPay'}}" class="nav-link" :class="{'text-secondary':data.orderFilter!=='notPay'}" style="font-size: 2px">待支付订单</RouterLink>
+                                <RouterLink :to="{path:'order',query:{orderFilter:'notReceive'}}" class="nav-link" :class="{'text-secondary':data.orderFilter!=='notReceive'}" style="font-size: 2px">待收货订单</RouterLink>
+                                <RouterLink :to="{path:'order',query:{orderFilter:'finish'}}" class="nav-link" :class="{'text-secondary':data.orderFilter!=='finish'}" style="font-size: 2px">已完成订单</RouterLink>
+                                <RouterLink :to="{path:'order',query:{orderFilter:'cancel'}}" class="nav-link" :class="{'text-secondary':data.orderFilter!=='cancel'}" style="font-size: 2px">已取消订单</RouterLink>
                             </nav>
                         </div>
                         <div class="col-4">
@@ -58,6 +53,24 @@
                                             <img style="height: 90px;width: 90px" :src="'data:image/png;base64,'+orderBook.book.imageString" class="order-img">
                                             <a>{{ orderBook.book.bname }}</a>
                                             <a>{{ orderBook.price }}×{{ orderBook.count }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-center" style="padding-top: 10px">
+                                        <div class="btn-group-vertical" role="group" aria-label="Vertical button group">
+                                            <template v-if="order.status===0">
+                                                <button type="button" class="btn btn-outline-success" onclick="payOrder('${order.oid}')">立即付款</button>
+                                                <button type="button" class="btn btn-outline-danger" onclick="cancelOrder('${order.oid}')">取消订单</button>
+                                            </template>
+                                            <template v-else-if="order.status===1">
+                                                <button type="button" class="btn btn-outline-danger" onclick="cancelOrder('${order.oid}')">取消订单</button>
+                                            </template>
+                                            <template v-else-if="order.status===2">
+                                                <button type="button" class="btn btn-outline-success" onclick="confirmOrder('${order.oid}')">确认收货</button>
+                                            </template>
+                                            <template v-else-if="order.status===3">
+                                                <button type="button" class="btn btn-outline-danger" onclick="returnGoods('${order.oid}')">申请退货</button>
+                                            </template>
+                                            <button type="button" class="btn btn-outline-warning" onclick="showOrderDetail(${order.toJSONString()})">订单详情</button>
                                         </div>
                                     </div>
                                 </div>
