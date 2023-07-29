@@ -12,7 +12,7 @@ import BookForm from "@/components/admin/BookForm.vue";
 // import OrderForm from "@/components/userForm/user/OrderForm.vue";
 
 /**
- * 以下是Qt+SpringBoot的路由配置
+ * 以下是SpringBoot+Vue的路由配置
  * */
 // const routes = [{
 //     path: '/shopping',
