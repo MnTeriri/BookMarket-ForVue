@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 20%;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 15%;">
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
                 <a href="#" class="nav-link active" aria-current="page">
