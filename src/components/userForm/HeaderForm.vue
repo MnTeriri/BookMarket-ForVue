@@ -17,10 +17,10 @@
                 </ul>
             </div>
             <div class="col-3">
-                <div class="navbar-collapse d-flex justify-content-end" >
-                    <input class="form-control me-2" type="search" v-model="data.searchValue" placeholder="输入图书名" aria-label="Search">
-                    <button class="btn btn-outline-success"
-                            @click="$emit('getBookList',data.searchValue,shoppingData.selectedCid,shoppingData.selectedPage)">
+                <div class="navbar-collapse d-flex justify-content-end">
+                    <input class="form-control me-2" type="search" v-model="data.searchValue" placeholder="输入图书名"
+                           aria-label="Search">
+                    <button class="btn btn-outline-success" @click="$emit('getBookList',data.searchValue,shoppingData.selectedCid,shoppingData.selectedPage)">
                         Search
                     </button>
                 </div>
@@ -28,13 +28,12 @@
             <div class="col-3 dropdown d-flex justify-content-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
                    aria-expanded="false">
-                    <img :src="'data:image/png;base64,'+data.userJSON.imageString" alt="mdo" width="32" height="32"
-                         class="rounded-circle">
+                    <img :src="'data:image/png;base64,'+data.userJSON.imageString" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><RouterLink to="../user/self" class="dropdown-item">个人中心</RouterLink></li>
                     <li><RouterLink to="../user/cart" class="dropdown-item">我的购物车</RouterLink></li>
-                    <li><RouterLink to="../user/order" class="dropdown-item">我的订单</RouterLink></li>
+                    <li><RouterLink :to="{path:'../user/order',query:{orderFilter:'all'}}" class="dropdown-item">我的订单</RouterLink></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="">退出登录</a></li>
                 </ul>
