@@ -24,11 +24,11 @@
             <template v-for="item in shoppingData.totalPage" :key="item">
                 <li class="page-item" aria-current="page" v-if="item===shoppingData.selectedPage">
                     <span class="page-link active"
-                          @click="$emit('getBookList',shoppingData.searchValue,shoppingData.selectedCid,item)">{{item }}</span>
+                          @click="$emit('getBookList',shoppingData.searchValue,shoppingData.selectedCid,item)">{{item}}</span>
                 </li>
                 <li class="page-item" aria-current="page" v-else>
                     <span class="page-link"
-                          @click="$emit('getBookList',shoppingData.searchValue,shoppingData.selectedCid,item)">{{item }}</span>
+                          @click="$emit('getBookList',shoppingData.searchValue,shoppingData.selectedCid,item)">{{item}}</span>
                 </li>
             </template>
             <li class="page-item">
