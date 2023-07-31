@@ -29,11 +29,7 @@ function getBookList(bname, cid, page) {
     data.searchName = bname
     data.selectedCid = cid
     data.selectedPage = page
-    proxy.$axios.post('/book/bookList', {
-        bname: bname,
-        cid: cid,
-        page: page
-    }, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(response => {
+    proxy.$axios.post('/book/bookList', {bname: bname, cid: cid, page: page}).then(response => {
         data.bookList = response.data.bookList
         data.totalPage = response.data.totalPage
     })
