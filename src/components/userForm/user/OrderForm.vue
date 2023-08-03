@@ -37,9 +37,7 @@
                                     <a style="font-size: 30px;color: #FF952F">{{ data.orderStatus[order.status] }}</a>
                                     <div class="col-9">
                                         <a style="font-size: 10px;color: #797979">创建时间：{{ order.createdTime }}</a>&nbsp;
-                                        <a style="font-size: 10px;color: #797979">收货人：{{
-                                                order.address.receiverName
-                                            }}</a>&nbsp;
+                                        <a style="font-size: 10px;color: #797979">收货人：{{order.address.receiverName }}</a>&nbsp;
                                         <a style="font-size: 10px;color: #797979">订单号：{{ order.oid }}</a>
                                     </div>
                                     <div class="col-3 text-end">
@@ -206,6 +204,7 @@ onBeforeRouteUpdate((to, from, next) => {//用于相同路径切换，执行某�
     getOrderList('',1)
     next()
 })
+
 onMounted(() => {
     data.orderFilter = proxy.$route.query.orderFilter
     getOrderList('',1)
@@ -217,6 +216,18 @@ function getOrderList(oid,page) {
     proxy.$axios.post('/order/orderList', {oid:data.searchOid,orderFilter: data.orderFilter, page: page}).then(response => {
         data.orderList = response.data.orderList;
         data.totalPage = response.data.totalPage;
+    })
+}
+
+function createOrder() {
+    proxy.$axios.post('/order/createOrder', {id: '1'}).then(response => {
+        console.log(response);
+    })
+}
+
+function payOrder() {
+    proxy.$axios.post('/order/payOrder', {id: '1'}).then(response => {
+        console.log(response);
     })
 }
 </script>
