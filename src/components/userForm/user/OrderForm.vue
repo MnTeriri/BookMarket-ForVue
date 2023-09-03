@@ -213,7 +213,7 @@ onMounted(() => {
 function getOrderList(oid,page) {
     data.searchOid=oid;
     data.selectedPage=page;
-    proxy.$axios.post('/order/orderList', {oid:data.searchOid,orderFilter: data.orderFilter, page: page}).then(response => {
+    proxy.$axios.post('/order/orderList', {oid:oid,orderFilter: data.orderFilter, page: page}).then(response => {
         data.orderList = response.data.orderList;
         data.totalPage = response.data.totalPage;
     })
