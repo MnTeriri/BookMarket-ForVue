@@ -17,37 +17,29 @@
                   d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
         </symbol>
     </svg>
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 15%;">
+    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 12%;">
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#home"></use>
-                    </svg>
+                <RouterLink to="book" class="nav-link" :class="{'active':data.formName==='book','link-dark':data.formName!=='book'}" aria-current="page">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
                     书籍管理
-                </a>
+                </RouterLink>
             </li>
             <li>
-                <a href="#" class="nav-link link-dark">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#speedometer2"></use>
-                    </svg>
-                    分类管理
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link link-dark">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#table"></use>
-                    </svg>
+                <RouterLink to="order" class="nav-link" :class="{'active':data.formName==='order','link-dark':data.formName!=='order'}">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
                     订单管理
-                </a>
+                </RouterLink>
+            </li>
+            <li>
+                <RouterLink to="" class="nav-link link-dark">
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                    分类管理
+                </RouterLink>
             </li>
             <li>
                 <a href="#" class="nav-link link-dark">
-                    <svg class="bi pe-none me-2" width="16" height="16">
-                        <use xlink:href="#people-circle"></use>
-                    </svg>
+                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
                     用户管理
                 </a>
             </li>
@@ -73,5 +65,13 @@
     <div style="width: 2%"></div>
 </template>
 <script setup>
+import {onMounted, reactive} from "vue";
+import {useRoute} from "vue-router";
 
+const data = reactive({
+    formName: ''
+})
+onMounted(() => {
+    data.formName = useRoute().name
+})
 </script>
