@@ -24,7 +24,7 @@
                     <div class="container">
                         <div class="row flex-wrap align-items-center justify-content-center">
                             <div class="col-2 text-center">
-                                <button type="button" class="btn btn-secondary">
+                                <button type="button" class="btn btn-secondary" @click="openAddressModal">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                          fill="currentColor"
                                          class="bi bi-geo-alt" viewBox="0 0 16 16">
@@ -33,16 +33,23 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="col-10">
+                            <div class="col-10" v-if="data.selectedAddress==null">
+                                <label class="form-check-label" style="font-size: 25px">
+                                    未选择地址
+                                </label>
+                            </div>
+                            <div class="col-10" v-else>
                                 <label class="form-check-label" style="font-size: 25px">
                                     {{ data.selectedAddress.receiverName }}&nbsp;&nbsp;
                                 </label>
                                 <label class="form-check-label" style="color: #797979">
                                     {{ data.selectedAddress.phone }}
                                 </label>
-                                <input type="hidden" id="aid" value="${address.id}">
-                                <p class="form-check-label" style="font-size: 5px;color: #797979;margin-top: 10px">
+                                <p v-if="data.selectedAddress.isDefault===1" class="form-check-label" style="font-size: 5px;color: #797979;margin-top: 10px">
                                     【默认地址】{{ data.selectedAddress.province }}&nbsp;{{ data.selectedAddress.city }}&nbsp;{{ data.selectedAddress.district }}&nbsp;{{ data.selectedAddress.address }}&nbsp;
+                                </p>
+                                <p v-else class="form-check-label" style="font-size: 5px;color: #797979;margin-top: 10px">
+                                    {{ data.selectedAddress.province }}&nbsp;{{ data.selectedAddress.city }}&nbsp;{{ data.selectedAddress.district }}&nbsp;{{ data.selectedAddress.address }}&nbsp;
                                 </p>
                             </div>
                         </div>
@@ -82,6 +89,34 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="addressMsg">选择地址</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div v-for="address in data.addressList" :key="address" class="row flex-wrap align-items-center justify-content-center" style="margin: 5px">
+                            <div class="col-1">
+                                <input :checked="data.selectedAddress!==null&&data.selectedAddress.id===address.id" class="form-check-input" name="addressCheck" type="radio" @click="data.selectedAddress=address">
+                            </div>
+                            <div class="col-11">
+                                <label class="form-check-label">{{address.receiverName}}&nbsp;</label>
+                                <label class="form-check-label" style="color: #797979;font-size: 5px;">{{address.phone}}</label><br>
+                                <label class="form-check-label" style="color: #797979;font-size: 5px;">{{address.province}}&nbsp;{{address.city}}&nbsp;{{address.district}}&nbsp;{{address.address}}&nbsp;</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#orderModal">取消</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="payModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -109,12 +144,10 @@
                         <img src="" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="">个人中心</a></li>
-                        <li><a class="dropdown-item" href="">我的购物车</a></li>
-                        <li><a class="dropdown-item" href="">我的订单</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        <li><RouterLink to="../user/self" class="dropdown-item">个人中心</RouterLink></li>
+                        <li><RouterLink to="../user/cart" class="dropdown-item">我的购物车</RouterLink></li>
+                        <li><RouterLink :to="{path:'../user/order',query:{orderFilter:'all'}}" class="dropdown-item">我的订单</RouterLink></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="">退出登录</a></li>
                     </ul>
                 </div>
@@ -202,7 +235,6 @@
         </div>
         <FooterForm/>
     </div>
-
 </template>
 <script setup>
 import FooterForm from "@/components/FooterForm.vue";
@@ -212,9 +244,12 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min'
 
 const {proxy} = getCurrentInstance()
 let deleteModal = null;
+let addressModal = null;
+let orderModal = null;
 let deleteCartId;
 const data = reactive({
     cartList: [],
+    addressList:[],
     selectedAddress: {},
     selectedCartCount: 0,
     totalCartCount: 0,
@@ -224,6 +259,8 @@ const data = reactive({
 onMounted(() => {
     getCartList()
     deleteModal = new bootstrap.Modal('#deleteModal');
+    addressModal = new bootstrap.Modal('#addressModal');
+    orderModal = new bootstrap.Modal('#orderModal');
 })
 
 const totalPrice = computed(() => {
@@ -322,31 +359,39 @@ function deleteCart() {
 }
 
 function createOrder() {
-    if (data.selectedAddress === {}) {
+    if (data.selectedAddress === null) {
         swal("未选择地址", {buttons: false, timer: 1000, icon: "warning"});
         return;
     }
-    proxy.$axios.post('/order/createOrder', {aid: data.selectedAddress.aid}).then(function (response) {
-        console.log(response.data)
-        // if (json.response === 1) {
-        //     swal("下单成功", {buttons: false, timer: 1000, icon: "success"});
-        //     setTimeout(function () {
-        //         $('#orderModal').modal('hide');
-        //         $('#payModal').modal('show');
-        //     }, 1300);
-        // } else if (json.response === -1) {
-        //     swal("书籍库存不足", {buttons: false, timer: 1000, icon: "warning"});
-        //     setTimeout(function () {location.reload();}, 1300);
-        // } else if (json.response === -2) {
-        //     swal("书籍缺货或下架", {buttons: false, timer: 1000, icon: "warning"});
-        //     setTimeout(function () {location.reload();}, 1300);
-        // } else if (json.response === -3) {
-        //     swal("未选中商品", {buttons: false, timer: 1000, icon: "warning"});
-        //     setTimeout(function () {location.reload();}, 1300);
-        // } else {
-        //     swal("错误", {buttons: false, timer: 1000, icon: "error"});
-        //     setTimeout(function () {location.reload();}, 1300);
-        // }
+    console.log(data.selectedAddress)
+    proxy.$axios.post('/order/createOrder', {aid: data.selectedAddress.id}).then(function (response) {
+        if (response.data.result === 1) {
+            swal("下单成功", {buttons: false, timer: 1000, icon: "success"});
+            setTimeout(function () {
+                orderModal.hide()
+                // $('#payModal').modal('show');
+            }, 1300);
+        } else if (response.data.result === -1) {
+            swal("书籍库存不足", {buttons: false, timer: 1000, icon: "warning"});
+            setTimeout(function () {getCartList()}, 1300);
+        } else if (response.data.result === -2) {
+            swal("书籍缺货或下架", {buttons: false, timer: 1000, icon: "warning"});
+            setTimeout(function () {getCartList()}, 1300);
+        } else if (response.data.result === -3) {
+            swal("未选中商品", {buttons: false, timer: 1000, icon: "warning"});
+            setTimeout(function () {getCartList()}, 1300);
+        } else {
+            swal("错误", {buttons: false, timer: 1000, icon: "error"});
+            setTimeout(function () {getCartList()}, 1300);
+        }
     });
+}
+
+function openAddressModal(){
+    proxy.$axios.post('/address/addressList').then(response => {
+        data.addressList = response.data
+        orderModal.hide()
+        addressModal.show()
+    })
 }
 </script>
