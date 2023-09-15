@@ -9,9 +9,17 @@
 * 用户基本信息管理
 * ...（没想好，后面再改）
 
+SpringBoot项目说明：[BookMarket-ForJava](https://github.com/MnTeriri/BookMarket-ForJava)
+
 ## 使用的框架
-* Vue
-* Bootstrap5
+* vue3
+* vuelidate
+* bootstrap
+* axios
+* sweetalert
+* jquery
+* distpicker
+* qwebchannel
 * ...（没想好，后面再改）
 
 ## 项目进展
