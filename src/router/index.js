@@ -9,11 +9,17 @@ import bookDetailForm from "@/components/userForm/shopping/BookDetailForm.vue";
 import SelfForm from "@/components/userForm/user/SelfForm.vue";
 import AddressForm from "@/components/userForm/user/AddressForm.vue";
 import OrderForm from "@/components/userForm/user/OrderForm.vue";
+// import BookForm from "@/components/admin/BookForm.vue";
+// import OrderForm from "@/components/admin/OrderForm.vue";
 
 /**
  * 以下是SpringBoot+Vue的路由配置
  * */
 const routes = [{
+    path: '/',
+    name: '',
+    redirect: '/login'
+},{
     path: '/shopping',
     name: 'shopping',
     component: HomeForm,
@@ -85,6 +91,10 @@ const router = createRouter({
 //     path:'/book',
 //     name:'book',
 //     component:BookForm
+// },{
+//     path:'/order',
+//     name:'order',
+//     component:OrderForm
 // }]
 //
 // const router = createRouter({

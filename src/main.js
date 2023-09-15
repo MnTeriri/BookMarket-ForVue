@@ -18,6 +18,5 @@ instance.defaults.withCredentials = true//设置axios发送cookie信息到后端
 const app = createApp(App)
 app.config.globalProperties.$axios = instance;
 app.use(router)
-
 // app.use(axiosPlugin)
 app.mount('#app')

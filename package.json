@@ -13,8 +13,10 @@
         "axios": "^1.4.0",
         "bootstrap": "^5.3.0",
         "core-js": "^3.8.3",
+        "distpicker": "^2.0.8",
         "jquery": "^3.6.3",
         "sweetalert": "^2.1.2",
+        "v-distpicker": "^2.1.0",
         "vue": "^3.2.13",
         "vue-router": "^4.2.4"
     },
